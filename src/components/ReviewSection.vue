@@ -1,3 +1,58 @@
+<script setup>
+import { onMounted, ref } from 'vue';
+import '../assets/bootstrap-icons.css';
+
+const reviews = ref();
+
+async function mockUpResponse() {
+    var obj = [ 
+        {
+            name: "Loren",
+            surname: "Ipsum",
+            review: "Dolor sit amet"
+        },
+        {
+            name: "Mario",
+            surname: "Mario",
+            review: "Not enough lasagna"
+        },
+        {
+            name: "Richter",
+            surname: "Belmont",
+            review: "Monstrous!"
+        },
+        {
+            name: "Jon",
+            surname: "Doe",
+            review: "Doe it or don't, there is no try!"
+        },
+        {
+            name: "Dat",
+            surname: "Boi",
+            review: "Here I come!"
+        },
+        {
+            name: "Grzegorz",
+            surname: "Brzęczyszczykiewicz",
+            review: "To wcale nie takie trudne!"
+        },
+    ];
+
+    // simulation of delay of getting from DB
+    await new Promise(r => setTimeout(r, 1000));
+
+    return obj;
+}
+
+onMounted(async () => {
+    const reviewsResponse = await mockUpResponse();
+    
+    reviews.value = reviewsResponse;
+});
+
+
+</script>
+
 <template>
     <section class="reviews-section section-padding" id="section_4">
                 <div class="container">
@@ -9,15 +64,15 @@
                             <h2>What people saying...</h2>
                         </div>
 
-                        <div class="col-lg-4 col-12">
+                        <div class="col-lg-4 col-12" v-for="review in reviews">
                             <div class="custom-block d-flex flex-wrap">
                                 <div class="custom-block-image-wrap d-flex flex-column">
                                     <img src="../assets/avatar/portrait-beautiful-young-woman-standing-grey-wall.jpg" class="img-fluid avatar-image" alt="">
 
                                     <div class="text-center mt-3">
-                                        <span class="text-white">Sandy</span>
+                                        <span class="text-white">{{review.name}}</span>
 
-                                        <strong class="d-block text-white">Artist</strong>
+                                        <strong class="d-block text-white">{{review.surname}}</strong>
                                     </div>
                                 </div>
 
@@ -35,65 +90,7 @@
                                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-lg-4 col-12 my-5 my-lg-0">
-                            <div class="custom-block d-flex flex-wrap">
-                                <div class="custom-block-image-wrap d-flex flex-column">
-                                    <img src="../assets/avatar/portrait-young-redhead-bearded-male.jpg" class="img-fluid avatar-image avatar-image-left" alt="">
-
-                                    <div class="text-center mt-3">
-                                        <span class="text-white">John</span>
-
-                                        <strong class="d-block text-white">Producer</strong>
-                                    </div>
-                                </div>
-
-                                <div class="custom-block-info">
-                                    <div class="reviews-group mb-3">
-                                        <strong>3.5</strong>
-
-                                        <i class="bi-star-fill"></i>
-                                        <i class="bi-star-fill"></i>
-                                        <i class="bi-star-fill"></i>
-                                        <i class="bi-star"></i>
-                                        <i class="bi-star"></i>
-                                    </div>
-
-                                    <p class="mb-0">If you need some specific CSS templates, you can Google with keywords such as templatemo one-page, templatemo portfolio, etc.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-12">
-                            <div class="custom-block d-flex flex-wrap">
-                                <div class="custom-block-image-wrap d-flex flex-column">
-                                    <img src="../assets/avatar/pretty-blonde-woman.jpg" class="img-fluid avatar-image" alt="">
-
-                                    <div class="text-center mt-3">
-                                        <span class="text-white">Candy</span>
-
-                                        <strong class="d-block text-white">VP, Design</strong>
-                                    </div>
-                                </div>
-
-                                <div class="custom-block-info">
-                                    <div class="reviews-group mb-3">
-                                        <strong>5</strong>
-
-                                        <i class="bi-star-fill"></i>
-                                        <i class="bi-star-fill"></i>
-                                        <i class="bi-star-fill"></i>
-                                        <i class="bi-star-fill"></i>
-                                        <i class="bi-star-fill"></i>
-                                    </div>
-
-                                    <p class="mb-0">Please tell your friends about our website that we provide 100% free CSS templates for everyone. Thank you for using our templates.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-
+                        </div>                   
                     </div>
                 </div>
             </section>
