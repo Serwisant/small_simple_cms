@@ -19,7 +19,7 @@
                                     </div>
 
                                     <div class="input-group mb-4">
-                                        <input type="email" name="ebook-email" id="ebook-email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="your@company.com" aria-label="ebook-form-email" aria-describedby="basic-addon2" required="">
+                                        <input type="email" name="ebook-email" id="ebook-email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="your@company.com" aria-label="ebook-form-email" aria-describedby="basic-addon2">
 
                                         <span class="input-group-text" id="basic-addon2">
                                             <i class="custom-form-icon bi-envelope"></i>
