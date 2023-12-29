@@ -1,3 +1,9 @@
+<script setup>
+import { ref } from 'vue';
+
+const logged = ref(true)   // 'Placeholder'
+
+</script>
 <template>
 <nav class="navbar navbar-expand-lg">
     <div class="container">
@@ -38,12 +44,17 @@
                 <li class="nav-item">
                     <a class="nav-link click-scroll" href="#section_5">Contact</a>
                 </li>
+
+                <li class="nav-item" v-if="logged === false">
+                    <a class="nav-link click-scroll" href="">Log in</a>
+                </li>
             </ul>
 
             <div class="d-none d-lg-block">
                 <a href="#" class="btn custom-btn custom-border-btn btn-naira btn-inverted">
                     <i class="btn-icon bi-cloud-download"></i>
-                    <span>Download</span><!-- duplicated above one for mobile -->
+                    <span v-if="logged">Log off</span><!-- duplicated above one for mobile -->
+                    <span v-else>Register</span>
                 </a>
             </div>
         </div>
