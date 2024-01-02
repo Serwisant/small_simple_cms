@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 
 const logged = ref(true)   // 'Placeholder'
+const adminDashboardEnabled = ref(true)   // 'Placeholder'
 
 </script>
 <template>
@@ -44,7 +45,9 @@ const logged = ref(true)   // 'Placeholder'
                 <li class="nav-item">
                     <a class="nav-link click-scroll" href="#section_5">Contact</a>
                 </li>
-
+                <li class="nav-item" v-if="adminDashboardEnabled">
+                    <a class="nav-link click-scroll" href="/admin">Admin dashbord</a>
+                </li>
                 <li class="nav-item" v-if="logged === false">
                     <a class="nav-link click-scroll" href="">Log in</a>
                 </li>
