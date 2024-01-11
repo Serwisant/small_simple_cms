@@ -89,9 +89,9 @@ export default {
 
     const post = {
       // PLACEHOLDER
-      title: "title",
-      content: "content2",
-      date: "2024-01-06",
+      title: "",
+      content: "",
+      date: "",
     };
 
     return {
@@ -104,8 +104,18 @@ export default {
       comments: null,
     };
   },
-  created() {
-    this.fetchComments();
+  async mounted() {
+    Axios.get("http://localhost:3000/page/getArticle/" + this.postId)
+      .then((r) => {
+        const json = JSON.parse(r.request.response);
+        this.articles = json["articles"];
+      })
+      .catch((e) => {
+        this.$message({
+          message: e,
+          type: "warning",
+        });
+      });
   },
   methods: {
     onSubmit() {
@@ -117,34 +127,7 @@ export default {
         type: "warning",
       });
     },
-    fetchComments() {
-      this.comments = [
-        {
-          id: 123,
-          comment: "abcdefg",
-          author: "anonek",
-          date: "2024-01-01",
-        },
-        {
-          id: 345,
-          comment: "asdf",
-          author: "anoneczek",
-          date: "2024-01-05",
-        },
-        {
-          id: 567,
-          comment: "qwerty",
-          author: "anonek2",
-          date: "2024-01-01",
-        },
-        {
-          id: 789,
-          comment: "zxc",
-          author: "anonek3",
-          date: "2024-01-02",
-        },
-      ];
-    },
+    fetchComments() {},
   },
 };
 </script>

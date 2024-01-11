@@ -1,9 +1,11 @@
 import request from "@/utils/request";
 
 export function getArticles(params) {
-  return request({
-    url: "/page/getArticles/",
+  const articles = request({
+    url: "http://localhost:3000/page/getArticles",
     method: "get",
     params,
   });
+
+  return articles;
 }
