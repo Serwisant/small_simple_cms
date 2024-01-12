@@ -114,7 +114,7 @@ export default {
   methods: {
     deleteComment(id) {
       Axios.delete(
-        "http://localhost:3000/page/deleteComment/" + this.postId + "/" + id
+        'http://localhost:3000/page/deleteComment/' + this.postId + "/" + id
       )
         .then((r) => {
           console.log(r);
@@ -142,7 +142,7 @@ export default {
       };
 
       Axios.post(
-        "http://localhost:3000/page/updateArticle/" + this.postId,
+        'http://localhost:3000/page/updateArticle/' + this.postId,
         article
       )
         .then((r) => {
@@ -160,13 +160,12 @@ export default {
         });
     },
     onCancel() {
-      this.$message({
-        message: "cancel!",
-        type: "warning",
+      this.$router.push({
+        path: this.redirect || "/showAllPosts/showAllPosts",
       });
     },
     refreshPostAndComments() {
-      Axios.get("http://localhost:3000/page/getArticleById/" + this.postId)
+      Axios.get('http://localhost:3000/page/getArticleById/' + this.postId)
         .then((r) => {
           const json = JSON.parse(r.request.response);
 

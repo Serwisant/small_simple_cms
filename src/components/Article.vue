@@ -20,12 +20,12 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" v-if="this.isUserLoggedIn">
         <div class="col-lg-12 col-12">
           <div class="app-container">
             <el-form ref="comment" :model="comment" label-width="120px">
               <el-form-item label="Author" width="250px">
-                <el-input v-model="comment.username" />
+                <el-input v-model="comment.username" readonly />
               </el-form-item>
               <el-form-item label="Comment">
                 <el-input v-model="comment.text" type="textarea" />
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { isUserLoggedIn, getUsername } from "@/api/user";
 import Axios from "axios";
 
 export default {
@@ -80,7 +81,7 @@ export default {
 
     var comment = {
       articleId: postId,
-      username: "",
+      username: getUsername(),
       text: "",
     };
 
@@ -89,6 +90,7 @@ export default {
       post,
       comments,
       comment,
+      isUserLoggedIn: isUserLoggedIn(),
     };
   },
   mounted() {
@@ -96,7 +98,7 @@ export default {
   },
   methods: {
     sendComment() {
-      Axios.post("http://localhost:3000/page/uploadComment", this.comment)
+      Axios.post('http://localhost:3000/page/uploadComment', this.comment)
         .then((r) => {
           this.$message({
             message: r.data.message,
@@ -116,7 +118,7 @@ export default {
         });
     },
     getArticle() {
-      Axios.get("http://localhost:3000/page/getArticleById/" + this.postId)
+      Axios.get('http://localhost:3000/page/getArticleById/' + this.postId)
         .then((r) => {
           const json = JSON.parse(r.request.response);
 

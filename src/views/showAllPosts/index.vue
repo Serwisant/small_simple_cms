@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column label="Title (click to go to post)" width="250">
         <template slot-scope="scope">
-          <a :href="'/editPost/' + scope.row._id + '/editPost/'">{{
+          <a :href="'/dashboard/editPost/' + scope.row._id + '/editPost/'">{{
             scope.row.title
           }}</a>
         </template>

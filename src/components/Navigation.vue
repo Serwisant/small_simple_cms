@@ -1,13 +1,26 @@
 <script>
+import { isUserLoggedIn, isUserAdmin, logout } from "@/api/user";
+
 export default {
   name: "Navigation",
   data() {
-    var logged = true;
-    var adminDashboardEnabled = true;
+    var logged = isUserLoggedIn();
+    var adminDashboardEnabled = isUserAdmin();
     return {
       logged,
       adminDashboardEnabled,
     };
+  },
+  methods: {
+    logoutUser() {
+      logout();
+      this.$router.go();
+    },
+    register() {
+      this.$router.push({
+        path: this.redirect || "/register",
+      });
+    },
   },
 };
 </script>
@@ -63,25 +76,34 @@ export default {
           <li class="nav-item">
             <a class="nav-link click-scroll" href="#section_5">Contact</a>
           </li>
-          <li class="nav-item" v-if="adminDashboardEnabled">
-            <a class="nav-link click-scroll" href="/dashboard/"
-              >Admin dashbord</a
+          <li class="nav-item" v-if="adminDashboardEnabled === true">
+            <a class="nav-link click-scroll" href="/dashboard"
+              >Admin dashboard</a
             >
           </li>
           <li class="nav-item" v-if="logged === false">
-            <a class="nav-link click-scroll" href="">Log in</a>
+            <a class="nav-link click-scroll" href="/register">Register</a>
           </li>
         </ul>
 
-        <div class="d-none d-lg-block">
+        <div class="d-none d-lg-block" v-if="logged">
           <a
             href="#"
             class="btn custom-btn custom-border-btn btn-naira btn-inverted"
+            @click="logoutUser"
           >
             <i class="btn-icon bi-cloud-download"></i>
-            <span v-if="logged">Log off</span
-            ><!-- duplicated above one for mobile -->
-            <span v-else>Register</span>
+            <span>Log off</span>
+          </a>
+        </div>
+
+        <div class="d-none d-lg-block" v-if="logged === false">
+          <a
+            href="/login"
+            class="btn custom-btn custom-border-btn btn-naira btn-inverted"
+          >
+            <i class="btn-icon bi-cloud-download"></i>
+            <span>Log in</span>
           </a>
         </div>
       </div>

@@ -33,6 +33,7 @@
 
 <script>
 import Axios from "axios";
+import { getUsername } from "@/api/user";
 
 export default {
   data() {
@@ -53,7 +54,7 @@ export default {
   methods: {
     onSubmit() {
       const article = {
-        author: "Admin?",
+        author: getUsername(),
         title: this.form.title,
         header: this.form.title,
         text: this.form.content,
@@ -62,7 +63,7 @@ export default {
         commentsVisibility: true,
       };
 
-      Axios.post("http://localhost:3000/page/uploadArticle/", article)
+      Axios.post('http://localhost:3000/page/uploadArticle/', article)
         .then((r) => {
           console.log(r);
           this.$message("Submitted!");
@@ -78,9 +79,8 @@ export default {
         });
     },
     onCancel() {
-      this.$message({
-        message: "cancel!",
-        type: "warning",
+      this.$router.push({
+        path: this.redirect || "/showAllPosts/showAllPosts",
       });
     },
   },

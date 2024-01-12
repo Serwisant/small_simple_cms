@@ -86,7 +86,7 @@ export const constantRoutes = [
   },
 
   {
-    path: "/showAllPosts",
+    path: "/dashboard/showAllPosts",
     component: Layout,
     children: [
       {
@@ -99,7 +99,7 @@ export const constantRoutes = [
   },
 
   {
-    path: "/createPost",
+    path: "/dashboard/createPost",
     component: Layout,
     children: [
       {
@@ -112,7 +112,7 @@ export const constantRoutes = [
   },
 
   {
-    path: "/editPost/:id",
+    path: "/dashboard/editPost/:id",
     component: Layout,
     children: [
       {

@@ -10,7 +10,7 @@ export default {
     };
   },
   mounted() {
-    Axios.get("http://localhost:3000/page/getArticles")
+    Axios.get('http://localhost:3000/page/getArticles')
       .then((r) => {
         const json = JSON.parse(r.request.response);
         this.posts = json["articles"];

@@ -55,7 +55,7 @@
           name="password"
           tabindex="2"
           auto-complete="false"
-          @keyup.enter.native="handleLogin"
+          @keyup.enter.native="handleRegister"
         />
         <span class="show-pwd" @click="showPwd">
           <svg-icon
@@ -68,7 +68,7 @@
         :loading="loading"
         type="primary"
         style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleLogin"
+        @click.native.prevent="handleRegister"
         >Register</el-button
       >
     </el-form>
@@ -76,7 +76,10 @@
 </template>
 
 <script>
+import { isUserLoggedIn } from "@/api/user";
 import { validUsername } from "@/utils/validate";
+import Axios from "axios";
+import jsCookie from "js-cookie";
 
 export default {
   name: "Register",
@@ -96,18 +99,17 @@ export default {
       }
     };
     const validateEmail = (rule, value, callback) => {
-      callback();
+      if (value.indexOf("@") >= 0 && value.indexOf(".") >= 0) callback();
+      else callback(new Error("Invalid email"));
     };
     return {
       registerForm: {
-        username: "admin",
-        email: "abc@email.com",
-        password: "111111",
+        username: "",
+        email: "",
+        password: "",
       },
       registerRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername },
-        ],
+        username: [{ required: true, trigger: "blur" }],
         email: [{ required: true, trigger: "blur", validator: validateEmail }],
         password: [
           { required: true, trigger: "blur", validator: validatePassword },
@@ -137,25 +139,35 @@ export default {
         this.$refs.password.focus();
       });
     },
-    handleLogin() {
-      this.$refs.registerForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.registerForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    handleRegister() {
+      console.log(this.registerForm);
+      Axios.post('http://localhost:3000/user/register', this.registerForm)
+        .then((r) => {
+          console.log(r);
+          this.$message("Registered!");
+          this.$router.push({
+            path: this.redirect || "/",
+          });
+        })
+        .catch((e) => {
+          this.$message({
+            message: e.response["data"]["error"],
+            type: "warning",
+          });
+          console.log(e);
+        });
     },
+  },
+  mounted() {
+    if (isUserLoggedIn() === true) {
+      this.$message({
+        message: "No access",
+        type: "warning",
+      });
+      this.$router.push({
+        path: this.redirect || "/",
+      });
+    }
   },
 };
 </script>
