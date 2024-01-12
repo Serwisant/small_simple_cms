@@ -40,7 +40,9 @@ export default {
             tabindex="0"
           >
             <div class="scrollspy-example-item" v-for="post in posts">
-              <h5>{{ post.title }}</h5>
+              <a :href="'/article/' + post._id"
+                ><h5>{{ post.title }}</h5></a
+              >
 
               <p v-html="post.text"></p>
             </div>

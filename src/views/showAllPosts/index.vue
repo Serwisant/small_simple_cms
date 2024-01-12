@@ -15,9 +15,14 @@
           {{ scope.row._id }}
         </template>
       </el-table-column>
+      <el-table-column align="center" label="Author" width="95">
+        <template slot-scope="scope">
+          {{ scope.row.author }}
+        </template>
+      </el-table-column>
       <el-table-column label="Title (click to go to post)" width="250">
         <template slot-scope="scope">
-          <a :href="'/editPost/' + scope.row.id + '/editPost/'">{{
+          <a :href="'/editPost/' + scope.row._id + '/editPost/'">{{
             scope.row.title
           }}</a>
         </template>
@@ -45,7 +50,7 @@
         width="200"
       >
         <template slot-scope="scope">
-          <span><a :href="'/delete/' + scope.row.id">Delete post</a></span>
+          <el-button @click="deletePost(scope.row._id)">Delete post</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -58,6 +63,39 @@ import Axios from "axios";
 
 export default {
   name: "ShowAllPosts",
+  methods: {
+    deletePost(id) {
+      Axios.delete("http://localhost:3000/page/deleteArticle/" + id)
+        .then((r) => {
+          console.log(r);
+          this.$message({
+            message: r.data.message,
+          });
+          this.refreshPosts();
+        })
+        .catch((e) => {
+          this.$message({
+            message: e,
+            type: "warning",
+          });
+        });
+    },
+    refreshPosts() {
+      Axios.get("http://localhost:3000/page/getArticles")
+        .then((r) => {
+          console.log(JSON.parse(r.request.response));
+
+          const json = JSON.parse(r.request.response);
+          this.articles = json["articles"];
+        })
+        .catch((e) => {
+          this.$message({
+            message: e,
+            type: "warning",
+          });
+        });
+    },
+  },
   data() {
     const articles = [];
 
@@ -66,19 +104,7 @@ export default {
     };
   },
   async mounted() {
-    Axios.get("http://localhost:3000/page/getArticles")
-      .then((r) => {
-        console.log(JSON.parse(r.request.response));
-
-        const json = JSON.parse(r.request.response);
-        this.articles = json["articles"];
-      })
-      .catch((e) => {
-        this.$message({
-          message: e,
-          type: "warning",
-        });
-      });
+    this.refreshPosts();
   },
 };
 </script>

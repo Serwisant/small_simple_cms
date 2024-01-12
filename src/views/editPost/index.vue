@@ -23,7 +23,7 @@
           </el-col>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit"
+          <el-button type="primary" @click="onSubmit(form.postId)"
             >Save post {{ form.postId }}</el-button
           >
           <el-button @click="onCancel">Cancel</el-button>
@@ -42,17 +42,17 @@
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.row.id }}
+          {{ scope.row._id }}
         </template>
       </el-table-column>
       <el-table-column label="Comment">
         <template slot-scope="scope">
-          {{ scope.row.comment }}
+          {{ scope.row.text }}
         </template>
       </el-table-column>
       <el-table-column label="Author" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -73,7 +73,9 @@
         width="200"
       >
         <template slot-scope="scope">
-          <span><a :href="'/delete/' + scope.row.id">Delete comment</a></span>
+          <el-button @click="deleteComment(scope.row._id)"
+            >Delete comment</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -82,6 +84,7 @@
 
 <script>
 import { getList } from "@/api/table";
+import Axios from "axios";
 
 export default {
   data() {
@@ -95,6 +98,7 @@ export default {
     };
 
     return {
+      postId,
       form: {
         postId: postId,
         title: post.title,
@@ -105,21 +109,55 @@ export default {
     };
   },
   async mounted() {
-    Axios.get("http://localhost:3000/page/getArticle/" + this.postId)
-      .then((r) => {
-        const json = JSON.parse(r.request.response);
-        this.articles = json["articles"];
-      })
-      .catch((e) => {
-        this.$message({
-          message: e,
-          type: "warning",
-        });
-      });
+    this.refreshPostAndComments();
   },
   methods: {
+    deleteComment(id) {
+      Axios.delete(
+        "http://localhost:3000/page/deleteComment/" + this.postId + "/" + id
+      )
+        .then((r) => {
+          console.log(r);
+          this.$message({
+            message: r.data.message,
+          });
+          this.refreshPostAndComments();
+        })
+        .catch((e) => {
+          this.$message({
+            message: e,
+            type: "warning",
+          });
+        });
+    },
     onSubmit() {
-      this.$message("Saved post " + this.form.postId);
+      const article = {
+        author: "Admin?",
+        title: this.form.title,
+        header: this.form.title,
+        text: this.form.content,
+        backgroundImage: "",
+        allowComments: true,
+        commentsVisibility: true,
+      };
+
+      Axios.post(
+        "http://localhost:3000/page/updateArticle/" + this.postId,
+        article
+      )
+        .then((r) => {
+          console.log(r);
+          this.$message({
+            message: r.data.message + this.postId,
+          });
+          this.refreshPostAndComments();
+        })
+        .catch((e) => {
+          this.$message({
+            message: e,
+            type: "warning",
+          });
+        });
     },
     onCancel() {
       this.$message({
@@ -127,7 +165,25 @@ export default {
         type: "warning",
       });
     },
-    fetchComments() {},
+    refreshPostAndComments() {
+      Axios.get("http://localhost:3000/page/getArticleById/" + this.postId)
+        .then((r) => {
+          const json = JSON.parse(r.request.response);
+
+          this.form.title = json["title"];
+          this.form.content = json["text"];
+          this.form.date = json["date"];
+
+          console.log(json["comments"]);
+          this.comments = json["comments"];
+        })
+        .catch((e) => {
+          this.$message({
+            message: e,
+            type: "warning",
+          });
+        });
+    },
   },
 };
 </script>
