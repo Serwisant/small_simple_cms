@@ -24,7 +24,7 @@
         <div class="col-lg-12 col-12">
           <div class="app-container">
             <el-form ref="comment" :model="comment" label-width="120px">
-              <el-form-item label="Author">
+              <el-form-item label="Author" width="250px">
                 <el-input v-model="comment.username" />
               </el-form-item>
               <el-form-item label="Comment">
@@ -47,7 +47,7 @@
         fit
         highlight-current-row
       >
-        <el-table-column label="Author" width="110" align="center">
+        <el-table-column label="Author" width="250" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.username }}</span>
           </template>
@@ -102,6 +102,11 @@ export default {
             message: r.data.message,
           });
           this.getArticle();
+          this.comment = {
+            articleId: this.postId,
+            username: "",
+            text: "",
+          };
         })
         .catch((e) => {
           this.$message({
@@ -120,7 +125,7 @@ export default {
           this.post.date = json["date"];
 
           console.log(json["comments"]);
-          this.comments = json["comments"];
+          this.comments = json["comments"].reverse();
         })
         .catch((e) => {
           this.$message({

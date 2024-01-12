@@ -66,6 +66,9 @@ export default {
         .then((r) => {
           console.log(r);
           this.$message("Submitted!");
+          this.$router.push({
+            path: this.redirect || "/showAllPosts/showAllPosts",
+          });
         })
         .catch((e) => {
           this.$message({
