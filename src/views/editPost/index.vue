@@ -11,17 +11,6 @@
         <el-form-item label="Post content">
           <el-input v-model="form.content" type="textarea" />
         </el-form-item>
-        <el-form-item label="Post time">
-          <el-col :span="11">
-            <el-date-picker
-              v-model="form.date"
-              type="date"
-              placeholder="Pick a date"
-              style="width: 100%"
-              readonly
-            />
-          </el-col>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit(form.postId)"
             >Save post {{ form.postId }}</el-button
@@ -102,8 +91,7 @@ export default {
       form: {
         postId: postId,
         title: post.title,
-        content: post.content,
-        date: post.date,
+        content: post.content
       },
       comments: null,
     };

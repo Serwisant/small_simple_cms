@@ -11,17 +11,6 @@
         <el-form-item label="Post content">
           <el-input v-model="form.content" type="textarea" />
         </el-form-item>
-        <el-form-item label="Post time">
-          <el-col :span="11">
-            <el-date-picker
-              v-model="form.date"
-              type="date"
-              placeholder="Posting date"
-              style="width: 100%"
-              readonly
-            />
-          </el-col>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">Create</el-button>
           <el-button @click="onCancel">Cancel</el-button>
@@ -37,13 +26,11 @@ import { getUsername } from "@/api/user";
 
 export default {
   data() {
-    const currentDate = new Date();
-
     return {
       form: {
         title: "Default title",
         content: "",
-        date: currentDate,
+        date: "",
         delivery: false,
         type: [],
         resource: "",

@@ -27,7 +27,7 @@
           }}</a>
         </template>
       </el-table-column>
-      <el-table-column label="Content" align="center">
+      <el-table-column label="Content">
         <template slot-scope="scope">
           <span>{{ scope.row.text }}</span>
         </template>
@@ -40,7 +40,7 @@
       >
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.date }}</span>
+          <span>{{ parseDate(scope.row.date) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -95,7 +95,9 @@ export default {
           });
         });
     },
-  },
+  parseDate(date) {
+    return new Date(Date.parse(date)).toLocaleString();
+  }},
   data() {
     const articles = [];
 

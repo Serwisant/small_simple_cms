@@ -14,7 +14,7 @@
               <h2>{{ this.post.title }}</h2>
 
               <p>{{ this.post.text }}</p>
-              <p>Posted in: {{ this.post.date }}</p>
+              <p>Posted in: {{ parseDate(this.post.date) }} by {{ this.post.author }}</p>
             </div>
           </div>
         </div>
@@ -75,6 +75,7 @@ export default {
       title: "",
       text: "",
       date: "",
+      author: ""
     };
 
     var comments = [];
@@ -125,6 +126,7 @@ export default {
           this.post.title = json["title"];
           this.post.text = json["text"];
           this.post.date = json["date"];
+          this.post.author = json["author"];
 
           console.log(json["comments"]);
           this.comments = json["comments"].reverse();
@@ -136,6 +138,9 @@ export default {
           });
         });
     },
+  parseDate(date) {
+    return new Date(Date.parse(date)).toLocaleString();
+  },
   },
 };
 </script>
