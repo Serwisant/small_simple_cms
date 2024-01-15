@@ -68,7 +68,7 @@ export default {
           console.log(r);
           this.$message("Submitted!");
           this.$router.push({
-            path: this.redirect || "/showAllPosts/showAllPosts",
+            path: this.redirect || "/dashboard/showAllPosts/showAllPosts",
           });
         })
         .catch((e) => {
@@ -80,7 +80,7 @@ export default {
     },
     onCancel() {
       this.$router.push({
-        path: this.redirect || "/showAllPosts/showAllPosts",
+        path: this.redirect || "/dashboard/showAllPosts/showAllPosts",
       });
     },
   },
