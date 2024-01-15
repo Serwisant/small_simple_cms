@@ -27,7 +27,7 @@
         />
       </el-form-item>
 
-      <el-form-item prop="username">
+      <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
@@ -85,21 +85,23 @@ export default {
   name: "Register",
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+      if (value.length < 4 || value.length > 15) {
+        callback(new Error("Username should be longed than 4 characters and shorter than 15 characters"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+      const passwordRegex = new RegExp("/^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,18}$/");
+      if (!passwordRegex.test(value)) {
+        callback(new Error("Password is too weak"));
       } else {
         callback();
       }
     };
     const validateEmail = (rule, value, callback) => {
-      if (value.indexOf("@") >= 0 && value.indexOf(".") >= 0) callback();
+      const emailRegex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+      if (emailRegex.test(value)) callback();
       else callback(new Error("Invalid email"));
     };
     return {
@@ -109,7 +111,7 @@ export default {
         password: "",
       },
       registerRules: {
-        username: [{ required: true, trigger: "blur" }],
+        username: [{ required: true, trigger: "blur", validator: validateUsername }],
         email: [{ required: true, trigger: "blur", validator: validateEmail }],
         password: [
           { required: true, trigger: "blur", validator: validatePassword },
@@ -151,7 +153,7 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e.response["data"]["error"],
+            message: e.response["data"]["message"],
             type: "warning",
           });
           console.log(e);
