@@ -107,7 +107,6 @@ export default {
           this.getArticle();
           this.comment = {
             articleId: this.postId,
-            username: "",
             text: "",
           };
         })
@@ -128,7 +127,7 @@ export default {
           this.post.date = json["date"];
           this.post.author = json["author"];
 
-          console.log(json["comments"]);
+          console.log(r);
           this.comments = json["comments"].reverse();
         })
         .catch((e) => {

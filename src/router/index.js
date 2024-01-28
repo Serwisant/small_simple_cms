@@ -44,6 +44,12 @@ export const constantRoutes = [
   },
 
   {
+    path: "/page/:id",
+    component: () => import("@/views/page/index"),
+    hidden: true,
+  },
+
+  {
     path: "/login",
     component: () => import("@/views/login/index"),
     hidden: true,
@@ -120,6 +126,48 @@ export const constantRoutes = [
         name: "Edit a post",
         component: () => import("@/views/editPost/index"),
         meta: { title: "Edit a post", icon: "form" },
+      },
+    ],
+    hidden: true,
+  },
+
+  {
+    path: "/dashboard/showAllPages",
+    component: Layout,
+    children: [
+      {
+        path: "showAllPages",
+        name: "Show all pages",
+        component: () => import("@/views/showAllPages/index"),
+        meta: { title: "Show all pages", icon: "form" },
+      },
+    ],
+    hidden: false,
+  },
+
+  {
+    path: "/dashboard/createPage",
+    component: Layout,
+    children: [
+      {
+        path: "createPage",
+        name: "Create a new page",
+        component: () => import("@/views/createPage/index"),
+        meta: { title: "Create a new page", icon: "form" },
+      },
+    ],
+    hidden: false,
+  },
+
+  {
+    path: "/dashboard/editPage/:id",
+    component: Layout,
+    children: [
+      {
+        path: "editPage",
+        name: "Edit post",
+        component: () => import("@/views/editPage/index"),
+        meta: { title: "Edit page", icon: "form" },
       },
     ],
     hidden: true,

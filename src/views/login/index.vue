@@ -127,6 +127,7 @@ export default {
           });
         })
         .catch((e) => {
+          console.log(e.response)
           this.$message({
             message: e.response["data"]["error"],
             type: "warning",

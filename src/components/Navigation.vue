@@ -1,15 +1,32 @@
 <script>
 import { isUserLoggedIn, isUserAdmin, logout } from "@/api/user";
+import Axios from "axios";
 
 export default {
   name: "Navigation",
   data() {
     var logged = isUserLoggedIn();
     var adminDashboardEnabled = isUserAdmin();
+    var pages = [];
     return {
+      pages,
       logged,
       adminDashboardEnabled,
     };
+  },
+  mounted() {
+    Axios.get('http://localhost:3000/page/getPages/')
+    .then((r) => {
+      const json = JSON.parse(r.request.response);
+
+      this.pages = json
+    })
+    .catch((e) => {
+      this.$message({
+        message: e,
+        type: "warning",
+      });
+    });
   },
   methods: {
     logoutUser() {
@@ -22,7 +39,7 @@ export default {
       });
     },
   },
-};
+  };
 </script>
 <template>
   <nav class="navbar navbar-expand-lg">
@@ -57,25 +74,10 @@ export default {
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-lg-auto me-lg-4">
-          <li class="nav-item">
-            <a class="nav-link click-scroll" href="#section_1">Home</a>
+          <li class="nav-item" v-for="page in pages">
+            <a class="nav-link click-scroll" :href="'/page/' + page.pageName"> {{ page.pageName }}</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link click-scroll" href="#section_2">The Book</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link click-scroll" href="#section_3">Author</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link click-scroll" href="#section_4">Reviews</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link click-scroll" href="#section_5">Contact</a>
-          </li>
           <li class="nav-item" v-if="adminDashboardEnabled === true">
             <a class="nav-link click-scroll" href="/dashboard"
               >Admin dashboard</a
